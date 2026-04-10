@@ -2,7 +2,7 @@
 
 A deep space telemetry and combat simulator.
 
-![Viper Command Gameplay](./screenshot.png?v=2)
+![Viper Command Gameplay](./screenshot_v2.png)
 
 ## Run Locally
 
