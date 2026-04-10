@@ -881,16 +881,18 @@ export default function App() {
 
       // Update Bullets
       state.bullets.forEach((b: any, i) => {
-        // Add trail particles - visible but fine
-        state.particles.push({
-          x: b.x + b.width / 2 + (Math.random() - 0.5) * 0.5,
-          y: b.y + b.height / 2 + (Math.random() - 0.5) * 0.5,
-          dx: -b.dx * 0.01 + (Math.random() - 0.5) * 0.1,
-          dy: (Math.random() - 0.5) * 0.1,
-          life: 0.8,
-          color: b.color,
-          size: (3.0 + Math.random() * 3.0) * state.trailSizeMultiplier
-        });
+        // Add trail particles - visible but fine (skip for player laser)
+        if (b.type !== 'laser') {
+          state.particles.push({
+            x: b.x + b.width / 2 + (Math.random() - 0.5) * 0.5,
+            y: b.y + b.height / 2 + (Math.random() - 0.5) * 0.5,
+            dx: -b.dx * 0.01 + (Math.random() - 0.5) * 0.1,
+            dy: (Math.random() - 0.5) * 0.1,
+            life: 0.8,
+            color: b.color,
+            size: (3.0 + Math.random() * 3.0) * state.trailSizeMultiplier
+          });
+        }
 
         if (b.type === 'boss_laser') {
           // Boss laser trail - more intense

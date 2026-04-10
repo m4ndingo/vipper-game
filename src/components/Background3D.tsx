@@ -876,7 +876,7 @@ export const Background3D = React.memo(({ progressRef, gameStateRef, isPaused, d
             scene.add(bulletPool[i]);
           }
           const mesh = bulletPool[i];
-          mesh.visible = false; // Hide projectile meshes as requested, trails remain visible via particles
+          mesh.visible = b.type === 'laser'; // Only show player laser mesh, others use trails
           
           // Update geometry if type changed (pool reuse)
           if (mesh.userData.type !== b.type) {
