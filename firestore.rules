@@ -1,0 +1,46 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // ===============================================================
+    // Assumed Data Model
+    // ===============================================================
+    // Collection: scores
+    // Document ID: global_record
+    // Fields:
+    //   - score: number (required) - The high score value
+    //   - userName: string (required, max 20 chars) - The player's name
+    //   - updatedAt: string (required, ISO 8601) - When it was set
+    // ===============================================================
+
+    // Helper Functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isValidScore(data) {
+      return data.score is number && 
+             data.score >= 0 &&
+             data.userName is string && 
+             data.userName.size() > 0 && 
+             data.userName.size() <= 20 &&
+             data.updatedAt is string &&
+             data.uid == request.auth.uid;
+    }
+
+    match /scores/global_record {
+      // Anyone can read the global high score
+      allow read: if true;
+      
+      // Only authenticated users can update the high score, 
+      // and only if the new score is higher than the existing one.
+      allow write: if isAuthenticated() && 
+                      isValidScore(request.resource.data) &&
+                      (resource == null || request.resource.data.score > resource.data.score);
+    }
+
+    // Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

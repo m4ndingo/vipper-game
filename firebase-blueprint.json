@@ -1,0 +1,22 @@
+{
+  "entities": {
+    "Score": {
+      "title": "Score",
+      "description": "Global high score record",
+      "type": "object",
+      "properties": {
+        "score": { "type": "integer" },
+        "userName": { "type": "string" },
+        "updatedAt": { "type": "string", "format": "date-time" },
+        "uid": { "type": "string" }
+      },
+      "required": ["score", "userName", "updatedAt", "uid"]
+    }
+  },
+  "firestore": {
+    "/scores/global_record": {
+      "schema": "Score",
+      "description": "The single global high score document"
+    }
+  }
+}
